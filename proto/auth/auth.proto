@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "/auth";
 
-// import "proto/types/types.proto";
+import "google/protobuf/empty.proto";
 
 package auth;
 
@@ -11,6 +11,7 @@ service Auth {
     rpc Login(LoginRequest) returns (LoginResponse);
     rpc UpdateTokens(UpdateTokensRequest) returns (UpdateTokensResponse);
     rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse);
+    rpc VerifyEmail(VerifyEmailRequest) returns (google.protobuf.Empty);
 }
 
 message RegisterRequest {
@@ -52,4 +53,8 @@ message VerifyTokenResponse {
     string user_id = 1;  
     string email = 2;      
     string username = 3;       
+}
+
+message VerifyEmailRequest {
+    string id = 1;
 }

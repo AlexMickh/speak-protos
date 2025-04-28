@@ -4,8 +4,6 @@
 // - protoc             v6.30.2
 // source: proto/auth/auth.proto
 
-// import "proto/types/types.proto";
-
 package auth
 
 import (
@@ -13,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -25,6 +24,7 @@ const (
 	Auth_Login_FullMethodName        = "/auth.Auth/Login"
 	Auth_UpdateTokens_FullMethodName = "/auth.Auth/UpdateTokens"
 	Auth_VerifyToken_FullMethodName  = "/auth.Auth/VerifyToken"
+	Auth_VerifyEmail_FullMethodName  = "/auth.Auth/VerifyEmail"
 )
 
 // AuthClient is the client API for Auth service.
@@ -35,6 +35,7 @@ type AuthClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	UpdateTokens(ctx context.Context, in *UpdateTokensRequest, opts ...grpc.CallOption) (*UpdateTokensResponse, error)
 	VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenResponse, error)
+	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type authClient struct {
@@ -85,6 +86,16 @@ func (c *authClient) VerifyToken(ctx context.Context, in *VerifyTokenRequest, op
 	return out, nil
 }
 
+func (c *authClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Auth_VerifyEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServer is the server API for Auth service.
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
@@ -93,6 +104,7 @@ type AuthServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	UpdateTokens(context.Context, *UpdateTokensRequest) (*UpdateTokensResponse, error)
 	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenResponse, error)
+	VerifyEmail(context.Context, *VerifyEmailRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -114,6 +126,9 @@ func (UnimplementedAuthServer) UpdateTokens(context.Context, *UpdateTokensReques
 }
 func (UnimplementedAuthServer) VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyToken not implemented")
+}
+func (UnimplementedAuthServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 func (UnimplementedAuthServer) testEmbeddedByValue()              {}
@@ -208,6 +223,24 @@ func _Auth_VerifyToken_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_VerifyEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).VerifyEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_VerifyEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).VerifyEmail(ctx, req.(*VerifyEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -230,6 +263,10 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VerifyToken",
 			Handler:    _Auth_VerifyToken_Handler,
+		},
+		{
+			MethodName: "VerifyEmail",
+			Handler:    _Auth_VerifyEmail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
