@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option go_package = "/user";
+
+import "google/protobuf/empty.proto";
+
+package user;
+
+service User {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+    rpc GetUser(GetUserRequest) returns (GetUserResponse);
+    rpc VerifyEmail(VerifyEmailRequest) returns (google.protobuf.Empty);
+    rpc UpdateUserInfo(UpdateUserInfoRequest) returns (UpdateUserInfoResponse);
+    rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
+}
+
+message CreateUserRequest {
+    string email = 1;
+    string username = 2;
+    string password = 3;
+    string description = 4;
+    bytes profileImage = 5;
+}
+
+message CreateUserResponse {
+    string id = 1;
+}
+
+message GetUserRequest {
+    string email = 1;
+}
+
+message GetUserResponse {
+    string id = 1;
+    string email = 2;
+    string username = 3;
+    string description = 4;
+    bytes profileImage = 5;
+}
+
+message VerifyEmailRequest {
+    string id = 1;
+}
+
+message UpdateUserInfoRequest {
+    string username = 1;
+    string description = 2;
+    string profileImage = 3;
+}
+
+message UpdateUserInfoResponse {
+    string id = 1;
+    string email = 2;
+    string username = 3;
+    string description = 4;
+    bytes profileImage = 5;
+}
+
+message DeleteUserRequest {
+    string id = 1;
+}
