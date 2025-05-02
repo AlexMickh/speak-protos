@@ -193,6 +193,7 @@ type GetUserResponse struct {
 	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
 	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	ProfileImage  []byte                 `protobuf:"bytes,5,opt,name=profileImage,proto3" json:"profileImage,omitempty"`
+	Password      string                 `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -260,6 +261,13 @@ func (x *GetUserResponse) GetProfileImage() []byte {
 		return x.ProfileImage
 	}
 	return nil
+}
+
+func (x *GetUserResponse) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
 }
 
 type VerifyEmailRequest struct {
@@ -500,13 +508,14 @@ const file_proto_user_user_proto_rawDesc = "" +
 	"\x12CreateUserResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"&\n" +
 	"\x0eGetUserRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"\x99\x01\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"\xb5\x01\n" +
 	"\x0fGetUserResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
 	"\busername\x18\x03 \x01(\tR\busername\x12 \n" +
 	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\"\n" +
-	"\fprofileImage\x18\x05 \x01(\fR\fprofileImage\"$\n" +
+	"\fprofileImage\x18\x05 \x01(\fR\fprofileImage\x12\x1a\n" +
+	"\bpassword\x18\x06 \x01(\tR\bpassword\"$\n" +
 	"\x12VerifyEmailRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"y\n" +
 	"\x15UpdateUserInfoRequest\x12\x1a\n" +
