@@ -35,7 +35,7 @@ message GetUserResponse {
     string email = 2;
     string username = 3;
     string description = 4;
-    bytes profileImage = 5;
+    string profileImageUrl = 5;
     string password = 6;
 }
 
@@ -46,7 +46,7 @@ message VerifyEmailRequest {
 message UpdateUserInfoRequest {
     string username = 1;
     string description = 2;
-    string profileImage = 3;
+    bytes profileImage = 3;
 }
 
 message UpdateUserInfoResponse {
@@ -54,7 +54,7 @@ message UpdateUserInfoResponse {
     string email = 2;
     string username = 3;
     string description = 4;
-    bytes profileImage = 5;
+    string profileImageUrl = 5;
 }
 
 message DeleteUserRequest {

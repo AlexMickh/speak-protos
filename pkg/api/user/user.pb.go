@@ -187,15 +187,15 @@ func (x *GetUserRequest) GetEmail() string {
 }
 
 type GetUserResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
-	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	ProfileImage  []byte                 `protobuf:"bytes,5,opt,name=profileImage,proto3" json:"profileImage,omitempty"`
-	Password      string                 `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email           string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Username        string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	Description     string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	ProfileImageUrl string                 `protobuf:"bytes,5,opt,name=profileImageUrl,proto3" json:"profileImageUrl,omitempty"`
+	Password        string                 `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *GetUserResponse) Reset() {
@@ -256,11 +256,11 @@ func (x *GetUserResponse) GetDescription() string {
 	return ""
 }
 
-func (x *GetUserResponse) GetProfileImage() []byte {
+func (x *GetUserResponse) GetProfileImageUrl() string {
 	if x != nil {
-		return x.ProfileImage
+		return x.ProfileImageUrl
 	}
-	return nil
+	return ""
 }
 
 func (x *GetUserResponse) GetPassword() string {
@@ -318,7 +318,7 @@ type UpdateUserInfoRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	ProfileImage  string                 `protobuf:"bytes,3,opt,name=profileImage,proto3" json:"profileImage,omitempty"`
+	ProfileImage  []byte                 `protobuf:"bytes,3,opt,name=profileImage,proto3" json:"profileImage,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -367,22 +367,22 @@ func (x *UpdateUserInfoRequest) GetDescription() string {
 	return ""
 }
 
-func (x *UpdateUserInfoRequest) GetProfileImage() string {
+func (x *UpdateUserInfoRequest) GetProfileImage() []byte {
 	if x != nil {
 		return x.ProfileImage
 	}
-	return ""
+	return nil
 }
 
 type UpdateUserInfoResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
-	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	ProfileImage  []byte                 `protobuf:"bytes,5,opt,name=profileImage,proto3" json:"profileImage,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email           string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Username        string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	Description     string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	ProfileImageUrl string                 `protobuf:"bytes,5,opt,name=profileImageUrl,proto3" json:"profileImageUrl,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *UpdateUserInfoResponse) Reset() {
@@ -443,11 +443,11 @@ func (x *UpdateUserInfoResponse) GetDescription() string {
 	return ""
 }
 
-func (x *UpdateUserInfoResponse) GetProfileImage() []byte {
+func (x *UpdateUserInfoResponse) GetProfileImageUrl() string {
 	if x != nil {
-		return x.ProfileImage
+		return x.ProfileImageUrl
 	}
-	return nil
+	return ""
 }
 
 type DeleteUserRequest struct {
@@ -508,26 +508,26 @@ const file_proto_user_user_proto_rawDesc = "" +
 	"\x12CreateUserResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"&\n" +
 	"\x0eGetUserRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"\xb5\x01\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"\xbb\x01\n" +
 	"\x0fGetUserResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
 	"\busername\x18\x03 \x01(\tR\busername\x12 \n" +
-	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\"\n" +
-	"\fprofileImage\x18\x05 \x01(\fR\fprofileImage\x12\x1a\n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12(\n" +
+	"\x0fprofileImageUrl\x18\x05 \x01(\tR\x0fprofileImageUrl\x12\x1a\n" +
 	"\bpassword\x18\x06 \x01(\tR\bpassword\"$\n" +
 	"\x12VerifyEmailRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"y\n" +
 	"\x15UpdateUserInfoRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\"\n" +
-	"\fprofileImage\x18\x03 \x01(\tR\fprofileImage\"\xa0\x01\n" +
+	"\fprofileImage\x18\x03 \x01(\fR\fprofileImage\"\xa6\x01\n" +
 	"\x16UpdateUserInfoResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
 	"\busername\x18\x03 \x01(\tR\busername\x12 \n" +
-	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\"\n" +
-	"\fprofileImage\x18\x05 \x01(\fR\fprofileImage\"#\n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12(\n" +
+	"\x0fprofileImageUrl\x18\x05 \x01(\tR\x0fprofileImageUrl\"#\n" +
 	"\x11DeleteUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id2\xcc\x02\n" +
 	"\x04User\x12?\n" +
