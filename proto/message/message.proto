@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "/message";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service Message {
+    rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
+    rpc Listen(ListenRequest) returns (stream ListenResponse);
+}
+
+message SendMessageRequest {
+    string chatId = 1;
+    string message = 2;
+}
+
+message ListenRequest {
+    string chatId = 1;
+}
+
+message ListenResponse {
+    string message = 1;
+    string senderId = 2;
+    google.protobuf.Timestamp sendTime = 3;
+}

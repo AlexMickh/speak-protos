@@ -23,8 +23,8 @@ const (
 	Chat_CreateChat_FullMethodName     = "/chat.Chat/CreateChat"
 	Chat_GetChat_FullMethodName        = "/chat.Chat/GetChat"
 	Chat_AddParticipant_FullMethodName = "/chat.Chat/AddParticipant"
-	Chat_SendMessage_FullMethodName    = "/chat.Chat/SendMessage"
-	Chat_Listen_FullMethodName         = "/chat.Chat/Listen"
+	Chat_UpdateChatInfo_FullMethodName = "/chat.Chat/UpdateChatInfo"
+	Chat_DeleteChat_FullMethodName     = "/chat.Chat/DeleteChat"
 )
 
 // ChatClient is the client API for Chat service.
@@ -34,8 +34,8 @@ type ChatClient interface {
 	CreateChat(ctx context.Context, in *CreateChatRequest, opts ...grpc.CallOption) (*CreateChatResponse, error)
 	GetChat(ctx context.Context, in *GetChatRequest, opts ...grpc.CallOption) (*GetChatResponse, error)
 	AddParticipant(ctx context.Context, in *AddParticipantRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	Listen(ctx context.Context, in *ListenRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ListenResponse], error)
+	UpdateChatInfo(ctx context.Context, in *UpdateChatInfoRequest, opts ...grpc.CallOption) (*UpdateChatInfoResponse, error)
+	DeleteChat(ctx context.Context, in *DeleteChatRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type chatClient struct {
@@ -76,34 +76,25 @@ func (c *chatClient) AddParticipant(ctx context.Context, in *AddParticipantReque
 	return out, nil
 }
 
-func (c *chatClient) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *chatClient) UpdateChatInfo(ctx context.Context, in *UpdateChatInfoRequest, opts ...grpc.CallOption) (*UpdateChatInfoResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Chat_SendMessage_FullMethodName, in, out, cOpts...)
+	out := new(UpdateChatInfoResponse)
+	err := c.cc.Invoke(ctx, Chat_UpdateChatInfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *chatClient) Listen(ctx context.Context, in *ListenRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ListenResponse], error) {
+func (c *chatClient) DeleteChat(ctx context.Context, in *DeleteChatRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &Chat_ServiceDesc.Streams[0], Chat_Listen_FullMethodName, cOpts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Chat_DeleteChat_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[ListenRequest, ListenResponse]{ClientStream: stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type Chat_ListenClient = grpc.ServerStreamingClient[ListenResponse]
 
 // ChatServer is the server API for Chat service.
 // All implementations must embed UnimplementedChatServer
@@ -112,8 +103,8 @@ type ChatServer interface {
 	CreateChat(context.Context, *CreateChatRequest) (*CreateChatResponse, error)
 	GetChat(context.Context, *GetChatRequest) (*GetChatResponse, error)
 	AddParticipant(context.Context, *AddParticipantRequest) (*emptypb.Empty, error)
-	SendMessage(context.Context, *SendMessageRequest) (*emptypb.Empty, error)
-	Listen(*ListenRequest, grpc.ServerStreamingServer[ListenResponse]) error
+	UpdateChatInfo(context.Context, *UpdateChatInfoRequest) (*UpdateChatInfoResponse, error)
+	DeleteChat(context.Context, *DeleteChatRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedChatServer()
 }
 
@@ -133,11 +124,11 @@ func (UnimplementedChatServer) GetChat(context.Context, *GetChatRequest) (*GetCh
 func (UnimplementedChatServer) AddParticipant(context.Context, *AddParticipantRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddParticipant not implemented")
 }
-func (UnimplementedChatServer) SendMessage(context.Context, *SendMessageRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+func (UnimplementedChatServer) UpdateChatInfo(context.Context, *UpdateChatInfoRequest) (*UpdateChatInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateChatInfo not implemented")
 }
-func (UnimplementedChatServer) Listen(*ListenRequest, grpc.ServerStreamingServer[ListenResponse]) error {
-	return status.Errorf(codes.Unimplemented, "method Listen not implemented")
+func (UnimplementedChatServer) DeleteChat(context.Context, *DeleteChatRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteChat not implemented")
 }
 func (UnimplementedChatServer) mustEmbedUnimplementedChatServer() {}
 func (UnimplementedChatServer) testEmbeddedByValue()              {}
@@ -214,34 +205,41 @@ func _Chat_AddParticipant_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Chat_SendMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendMessageRequest)
+func _Chat_UpdateChatInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateChatInfoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatServer).SendMessage(ctx, in)
+		return srv.(ChatServer).UpdateChatInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Chat_SendMessage_FullMethodName,
+		FullMethod: Chat_UpdateChatInfo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServer).SendMessage(ctx, req.(*SendMessageRequest))
+		return srv.(ChatServer).UpdateChatInfo(ctx, req.(*UpdateChatInfoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Chat_Listen_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ListenRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _Chat_DeleteChat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteChatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(ChatServer).Listen(m, &grpc.GenericServerStream[ListenRequest, ListenResponse]{ServerStream: stream})
+	if interceptor == nil {
+		return srv.(ChatServer).DeleteChat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Chat_DeleteChat_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServer).DeleteChat(ctx, req.(*DeleteChatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type Chat_ListenServer = grpc.ServerStreamingServer[ListenResponse]
 
 // Chat_ServiceDesc is the grpc.ServiceDesc for Chat service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -263,16 +261,14 @@ var Chat_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Chat_AddParticipant_Handler,
 		},
 		{
-			MethodName: "SendMessage",
-			Handler:    _Chat_SendMessage_Handler,
+			MethodName: "UpdateChatInfo",
+			Handler:    _Chat_UpdateChatInfo_Handler,
 		},
-	},
-	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "Listen",
-			Handler:       _Chat_Listen_Handler,
-			ServerStreams: true,
+			MethodName: "DeleteChat",
+			Handler:    _Chat_DeleteChat_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/chat/chat.proto",
 }
