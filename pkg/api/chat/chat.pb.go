@@ -175,7 +175,7 @@ type ChatType struct {
 	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description    string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	ChatImage      []byte                 `protobuf:"bytes,4,opt,name=chatImage,proto3" json:"chatImage,omitempty"`
+	ChatImageUrl   string                 `protobuf:"bytes,4,opt,name=chatImageUrl,proto3" json:"chatImageUrl,omitempty"`
 	ChatOwnerId    string                 `protobuf:"bytes,5,opt,name=chatOwnerId,proto3" json:"chatOwnerId,omitempty"`
 	ParticipantsId []string               `protobuf:"bytes,6,rep,name=participantsId,proto3" json:"participantsId,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -233,11 +233,11 @@ func (x *ChatType) GetDescription() string {
 	return ""
 }
 
-func (x *ChatType) GetChatImage() []byte {
+func (x *ChatType) GetChatImageUrl() string {
 	if x != nil {
-		return x.ChatImage
+		return x.ChatImageUrl
 	}
-	return nil
+	return ""
 }
 
 func (x *ChatType) GetChatOwnerId() string {
@@ -518,12 +518,12 @@ const file_proto_chat_chat_proto_rawDesc = "" +
 	"\x12CreateChatResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\" \n" +
 	"\x0eGetChatRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xb8\x01\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xbe\x01\n" +
 	"\bChatType\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1c\n" +
-	"\tchatImage\x18\x04 \x01(\fR\tchatImage\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\"\n" +
+	"\fchatImageUrl\x18\x04 \x01(\tR\fchatImageUrl\x12 \n" +
 	"\vchatOwnerId\x18\x05 \x01(\tR\vchatOwnerId\x12&\n" +
 	"\x0eparticipantsId\x18\x06 \x03(\tR\x0eparticipantsId\"5\n" +
 	"\x0fGetChatResponse\x12\"\n" +
